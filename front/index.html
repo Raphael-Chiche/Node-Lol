@@ -4,9 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>League of Legend</title>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div>
+    <div class="formIndex">
       <label for="champion">Nom du champion</label>
       <input type="text" name="champion" />
       <label for="type">Son type</label>
@@ -16,7 +17,7 @@
       >
         New Champion
       </button>
-      <button onclick="generateChampions()">dsf</button>
+      <button onclick="generateChampions()">Generate Champions</button>
     </div>
     <h1>List of Champion</h1>
     <div id="champions"></div>
@@ -27,8 +28,10 @@
           let champions = document.querySelector("#champions");
           data.forEach((champion) => {
             champions.innerHTML += `
+                <div class="styleChampion">
                 <a href="champion.html?id=${champion.id}"><h2>${champion.name}</h2></a>
-                <h3>${champion.type}</h3>
+                <p>${champion.type}</p>
+                </div>
                 `;
           });
         });
