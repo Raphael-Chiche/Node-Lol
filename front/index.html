@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>League of Legend</title>
+  </head>
+  <body>
+    <div>
+      <label for="champion">Nom du champion</label>
+      <input type="text" name="champion" />
+      <label for="type">Son type</label>
+      <input type="text" name="type" />
+      <button
+        onclick="sendChampion(document.querySelector('input[name=\'champion\']').value, document.querySelector('input[name=\'type\']').value)"
+      >
+        New Champion
+      </button>
+      <button onclick="generateChampions()">dsf</button>
+    </div>
+    <h1>List of Champion</h1>
+    <div id="champions"></div>
+    <script>
+      fetch("http://localhost:3000/champions")
+        .then((response) => response.json())
+        .then((data) => {
+          let champions = document.querySelector("#champions");
+          data.forEach((champion) => {
+            champions.innerHTML += `
+                <a href="champion.html?id=${champion.id}"><h2>${champion.name}</h2></a>
+                <h3>${champion.type}</h3>
+                `;
+          });
+        });
+
+      const sendChampion = async (champion, type) => {
+        let response = await fetch("http://localhost:3000/champions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: champion, type: type }),
+        });
+        window.location.href = "index.html";
+      };
+
+      const generateChampions = async () => {
+        let response = await fetch("champions.json");
+        let data = await response.json();
+
+        let requests = data.map((champion) => {
+            return sendChampion(champion.name, champion.type);
+        });
+
+        await Promise.all(requests);
+        window.location.href = "index.html";
+      };
+    </script>
+  </body>
+</html>
